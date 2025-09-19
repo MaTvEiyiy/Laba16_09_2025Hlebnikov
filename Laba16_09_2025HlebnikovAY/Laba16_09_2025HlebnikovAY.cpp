@@ -30,27 +30,19 @@ void InputCor(T& var)
 		cin >> var;
 	}
 }
-/*template <typename T>
-void InputCorBool(T& var) {
-	int temp;
-	cin >> temp;
-	while (cin.fail() || cin.peek() != '\n' || (temp != 0 && temp != 1)) {
-		cin.clear();
-		cin.ignore(1000, '\n');
-		cout << "Ошибка, введите 0 или 1!" << endl;
-		cin >> temp;
-	}
-	var = (temp == 1);
-}*/
 
 void getPipe(Pipe& p) {
-	if (p.lenght!= 0) {
+	if (p.namePipe!= "") {
 		cout << "У вас уже есть труба" << endl;
 	}
 	else {
 		cout << "Введите название трубы: ";
-		cin.ignore();
+		cin.ignore(1000, '\n');
 		getline(cin, p.namePipe);
+		while (p.namePipe == "") {
+			cout << "Название не может быть пустым!" << endl;
+			getline(cin, p.namePipe);
+		}
 		cout << "Введите длину: ";
 		InputCor(p.lenght);
 		cout << "Введите диаметр: ";
@@ -68,6 +60,10 @@ void getKC(KompresCtation& c) {
 		cout << "Введите название компрессорной станции: ";
 		cin.ignore(1000, '\n');
 		getline(cin, c.nameKC);
+		while (c.nameKC == "") {
+			cout << "Название не может быть пустым!" << endl;
+			getline(cin, c.nameKC);
+		}
 		cout << "Введите количество цехов: ";
 		InputCor(c.count_cex);
 		cout << "Введите количество работающих цехов: ";
@@ -84,7 +80,7 @@ void getKC(KompresCtation& c) {
 		}
 	}
 }
-void show_pipe(Pipe& p) {
+void show_pipe(Pipe p) {
 	if (p.namePipe == "") {
 		cout << "У вас нет трубы" << endl;
 	}
@@ -112,7 +108,7 @@ void show_ks(KompresCtation& c) {
 
 }
 void changPipe(Pipe& p) {
-	if (p.lenght == 0) {
+	if (p.namePipe=="") {
 		cout << "У вас еще нет трубы!" << endl;
 	}
 	else {
@@ -134,12 +130,12 @@ void changKS(KompresCtation& c) {
 		}
 	}
 }
-void savePipe(ofstream& fout, const Pipe& p) {
-	string Marker = "Pipe";
-	if (p.lenght == 0) {
+void savePipe(ofstream& fout, const Pipe& p) {// const чтобы значение трубы нельхя было изменить
+	string Marker = "Труба";
+	if (p.namePipe == "") {
 		fout << Marker << endl;
 	}
-	else {
+	else{
 		fout << p.namePipe << endl;
 		fout << p.lenght << endl;
 		fout << p.diametr << endl;
@@ -147,32 +143,44 @@ void savePipe(ofstream& fout, const Pipe& p) {
 	}
 }
 void saveKS(ofstream& fout, const KompresCtation& c) {
-	string Marker = "KS";
+	string Marker = "КС";
 	if (c.nameKC == "") {
-		fout << Marker << endl;
+			fout << Marker << endl;
 	}
-	else {
+	else{
 		fout << c.nameKC << endl;
 		fout << c.count_cex << endl;
 		fout << c.count_cex_work<< endl;
 		fout << c.klass << endl;
 	}
 }
-void loudPipe(ifstream& fin, Pipe& p) {
+Pipe loudPipe(ifstream& fin, Pipe& p) {
 	string Marker;
 	getline(fin >> ws, Marker);
-	p.namePipe=Marker;
-	fin >> p.lenght;
-	fin >> p.diametr;
-	fin >> p.repair;
+	if (Marker == "Труба") {
+		return p = { "",0,0,0 };
+	}
+	else {
+		p.namePipe = Marker;
+		fin >> p.lenght;
+		fin >> p.diametr;
+		fin >> p.repair;
+		return p;
+	}
 }
-void loudKS(ifstream& fin, KompresCtation& c) {
+KompresCtation loudKS(ifstream& fin, KompresCtation& c) {
 	string Marker;
 	getline(fin >> ws, Marker);
-	c.nameKC= Marker;
-	fin >> c.count_cex;
-	fin >> c.count_cex_work;
-	fin >> c.klass;
+	if (Marker == "КС") {
+		return c = { "",0,0,0 };
+	}
+	else {
+		c.nameKC = Marker;
+		fin >> c.count_cex;
+		fin >> c.count_cex_work;
+		fin >> c.klass;
+		return c;
+	}
 }
 void menu() {
 	cout << "-------MENU-------" << endl;
@@ -193,15 +201,17 @@ int main() {
 	setlocale(LC_ALL, "Russian");
 	Pipe p;
 	KompresCtation c;
+	int vibor;
+	string filename = "save.txt";
 	while (true) 
 	{
 		menu();
 
-		int vibor;
 
 
 
 		cout << "Введите номер команды: ";
+		cin.clear(1000, '\n');
 		InputCor(vibor);
 
 		switch (vibor)
@@ -228,10 +238,11 @@ int main() {
 			break;
 		}
 		case 6: {
-			ofstream fout("save.txt");
+			ofstream fout(filename);
 			if (fout.is_open()) {
 				savePipe(fout, p);
 				saveKS(fout, c);
+				cout << "Данные сохранены" << endl;
 			}
 			else {
 				cout << "файл не открывается" << endl;
@@ -239,11 +250,12 @@ int main() {
 			break;
 		}
 		case 7: {
-			ifstream fin("save.txt");
+			ifstream fin(filename);
 			if (fin.is_open()) {
 				loudPipe(fin, p);
 				loudKS(fin, c);
 				fin.close();
+				cout << "Данные загружены из файла" << endl;
 			}
 			else {
 				cout << "Файл не открылся" << endl;
