@@ -25,6 +25,8 @@ void ks::getks() {
 	count_cex_work=InputCor(0,count_cex);
 	cout << "Введите класс станции (от 1 до 5): ";
 	klass = InputCor(1, 5);
+	id = MaxID;
+	MaxID++;
 }
 
 void ks::edit() {
@@ -41,11 +43,11 @@ void ks::showks(const unordered_map<int, ks>& css) {
 	for (const auto& pair : css) {
 		
 		cout << "----Ваша компрессорная станция----" << endl;
-		cout << "ID" << pair.first << endl;
-		cout << "Название станции: " << ksname<< endl;
-		cout << "Количество цехов: " << count_cex << endl;
-		cout << "Количесвто работающих цехов: " << count_cex_work << endl;
-		cout << "Класс КС: " << klass << endl;
+		cout << "ID: " << pair.first << endl;
+		cout << "Название станции: " << pair.second.ksname<< endl;
+		cout << "Количество цехов: " << pair.second.count_cex << endl;
+		cout << "Количесвто работающих цехов: " << pair.second.count_cex_work << endl;
+		cout << "Класс КС: " << pair.second.klass << endl;
 	}
 }void ks::saveks(ofstream& fout, unordered_map<int, ks>& css) {
 	string Marker = "КС";
@@ -71,7 +73,7 @@ void ks::loudks(ifstream& fin, unordered_map<int, ks>& css) {
 	while (true) {
 		getline(fin, Marker);
 		if (fin.eof())break;
-		if (Marker != "KS")continue;
+		if (Marker != "КС")continue;
 		int save_id;
 		if (!(fin >> save_id))break;
 		ks c;
@@ -90,7 +92,7 @@ void ks::loudks(ifstream& fin, unordered_map<int, ks>& css) {
 void ks::search_ksname(const unordered_map<int, ks>& css, unordered_set<int>& keys, const string& name) {
 	for (const auto& pair : css) {
 		if (pair.second.ksname.find(name) != string::npos) {
-			keys.insert(id);
+			keys.insert(pair.first);
 		}
 	}
 }
@@ -100,11 +102,10 @@ void ks::delete_searched(unordered_map<int, ks>& css, const unordered_set<int>& 
 	}
 }
 void ks::edit_searched(unordered_map<int, ks>& css, const unordered_set<int>& keys) {
-	for (auto& pair : css) {
-		if (keys.find(id) != keys.end()) {
-			cin.clear();
-			cin.ignore(1000, '\n');
-			cin >> css[pair.first].count_cex;
+	for (const int& key : keys) {
+		if (css.count(key)!=0) {
+			cout << "" << key << endl;
+			cin >> css[key].count_cex_work;
 		}
 	}
 }

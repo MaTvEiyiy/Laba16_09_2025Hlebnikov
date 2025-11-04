@@ -96,7 +96,7 @@ void Pipe::loudPipe(ifstream& fin, unordered_map<int, Pipe>& pipe_group) {
 void Pipe::search_pipename(unordered_set<int>& keys, const unordered_map<int, Pipe>& pipe_group, const string& name) {
 	for (const auto& pair : pipe_group) {
 		if (pair.second.namePipe.find(name) != string::npos) {
-			keys.insert(id);
+			keys.insert(pair.first);
 		}
 	}
 }
@@ -104,7 +104,7 @@ void Pipe::search_pipename(unordered_set<int>& keys, const unordered_map<int, Pi
 void Pipe::search_piperepair(unordered_set<int>& keys, const unordered_map<int, Pipe>& pipe_group, const bool& inrep) {
 	for (const auto& pair : pipe_group) {
 		if (inrep == pair.second.repair) {
-			keys.insert(id);
+			keys.insert(pair.first);
 		}
 	}
 }
