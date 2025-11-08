@@ -39,7 +39,7 @@ int main() {
 
 	while (true) {
 		menu();
-		switch (InputCor(0, 9))
+		switch (InputCor(0, 10))
 		{
 		case 1:
 			option1(pipe_group);
@@ -76,6 +76,9 @@ int main() {
 		case 0: {
 			cout << "До свидания!" << endl;
 			return 0;
+		case 10:
+			view_logs();
+			break;
 		}
 		default: {
 			cout << "Такого пункта нет" << endl;

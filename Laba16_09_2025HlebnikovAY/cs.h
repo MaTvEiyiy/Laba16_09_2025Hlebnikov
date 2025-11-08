@@ -21,6 +21,7 @@ public:
 	void delete_searched(unordered_map<int, ks>& css, const unordered_set<int>& keys);
 	void edit_searched(unordered_map<int, ks>& css, const unordered_set<int>& keys);
 	void show_searched(unordered_map<int, ks>& css, const unordered_set<int>& keys);
+	void search_ks_working_cex(const unordered_map<int, ks>& css, unordered_set<int>& keys, int percent);//тут такая
 private:
 	static int MaxID;
 	int id = 0;

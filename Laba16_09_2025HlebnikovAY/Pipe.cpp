@@ -125,8 +125,9 @@ void Pipe::show_searched(unordered_map<int, Pipe>& pipe_group, const unordered_s
 void Pipe::edit_searched(unordered_map<int, Pipe>& pipe_group, const unordered_set<int>& keys) {
 	for (const int& key : keys) {
 		if (pipe_group.count(key) != 0) {
-			cout << "" << key << endl;
-			cin >> pipe_group[key].repair;
+			cout << "Редактирование трубы ID" << key << " (" << pipe_group[key].namePipe << " )" << endl;
+			cout << "Труба в ремонте? (1-да, 0-нет): ";
+			pipe_group[key].repair = InputCor(0, 1);
 		}
 	}
 }

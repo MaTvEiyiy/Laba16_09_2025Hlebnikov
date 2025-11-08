@@ -40,6 +40,7 @@ void menu();
 void delete_menu();
 void sort_menu();
 void action();
+void view_logs();
 
 template <typename T>
 void ID_ver(unordered_map<int, T>& objects, int todo) {

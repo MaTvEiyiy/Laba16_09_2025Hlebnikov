@@ -104,8 +104,9 @@ void ks::delete_searched(unordered_map<int, ks>& css, const unordered_set<int>& 
 void ks::edit_searched(unordered_map<int, ks>& css, const unordered_set<int>& keys) {
 	for (const int& key : keys) {
 		if (css.count(key)!=0) {
-			cout << "" << key << endl;
-			cin >> css[key].count_cex_work;
+			cout << "Редактирование КС ID " << key <<" ("<<css[key].ksname<<")"<< endl;
+			cout << "Введите количество работающих цехов (0-" << css[key].count_cex << "):";
+			css[key].count_cex_work = InputCor(0, css[key].count_cex);
 		}
 	}
 }
@@ -117,5 +118,13 @@ void ks::show_searched(unordered_map<int, ks>& css, const unordered_set<int>& ke
 		cout << "Количество цехов: " << css[key].count_cex << endl;
 		cout << "Количество работающих цехов: " << css[key].count_cex_work << endl;
 		cout << "Класс: " << css[key].klass << endl;
+	}
+}
+
+void ks::search_ks_working_cex(const unordered_map<int, ks>& css, unordered_set<int>& keys, int working_cex) {
+	for (const auto& pair : css) {
+		if (pair.second.count_cex_work==working_cex) {
+			keys.insert(pair.first);
+		}
 	}
 }
