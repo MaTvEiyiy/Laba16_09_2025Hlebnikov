@@ -1,76 +1,256 @@
-#include <iostream>
-#include <filesystem>
+Ôªø#include <iostream>
 #include <vector>
+#include <string>
 #include <algorithm>
+#include <windows.h>
 #include "dop.h"
+#include "Pipe.h"
+#include "cs.h"
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
 void menu() {
 	cout <<
-		"0. ¬˚ıÓ‰\n" <<
-		"1. ƒÓ·‡‚ËÚ¸ ÌÓ‚Û˛ ÚÛ·Û\n" <<
-		"2. ƒÓ·‡‚ËÚ¸ ÌÓ‚Û˛  —\n" <<
-		"3. œÓÍ‡Á‡Ú¸ ‚ÒÂ Ó·˙ÂÍÚ˚\n" <<
-		"4. –Â‰‡ÍÚËÓ‚‡Ú¸ ÚÛ·Û\n" <<
-		"5. –Â‰‡ÍÚËÓ‚‡Ú¸  —\n" <<
-		"6. —Óı‡ÌËÚ¸ Ù‡ÈÎ\n" <<
-		"7. «‡„ÛÁËÚ¸ ËÁ Ù‡ÈÎ‡\n" <<
-		"8.”‰‡ÎËÚ¸ Ó·˙ÂÍÚ\n" <<
-		"9. ‘ËÎ¸Ú\n" << 
-        "10. ÔÓÒÏÓÚ log-Ù‡ÈÎÓ‚ "<<endl;
+		"0. –í—ã—Ö–æ–¥\n" <<
+		"1. –î–æ–±–∞–≤–∏—Ç—å –Ω–æ–≤—É—é —Ç—Ä—É–±—É\n" <<
+		"2. –î–æ–±–∞–≤–∏—Ç—å –Ω–æ–≤—É—é –ö–°\n" <<
+		"3. –ü–æ–∫–∞–∑–∞—Ç—å –≤—Å–µ –æ–±—ä–µ–∫—Ç—ã\n" <<
+		"4. –†–µ–¥–∞–∫—Ç–∏—Ä–æ–≤–∞—Ç—å —Ç—Ä—É–±—É\n" <<
+		"5. –†–µ–¥–∞–∫—Ç–∏—Ä–æ–≤–∞—Ç—å –ö–°\n" <<
+		"6. –°–æ—Ö—Ä–∞–Ω–∏—Ç—å —Ñ–∞–π–ª\n" <<
+		"7. –ó–∞–≥—Ä—É–∑–∏—Ç—å –∏–∑ —Ñ–∞–π–ª–∞\n" <<
+		"8.–£–¥–∞–ª–∏—Ç—å –æ–±—ä–µ–∫—Ç\n" <<
+		"9. –§–∏–ª—å—Ç—Ä\n" << 
+        "10. –ø—Ä–æ—Å–º–æ—Ç—Ä log-—Ñ–∞–π–ª–æ–≤ "<<endl;
 }
 
 void sort_menu() {
 	cout <<
-		"0. ¬˚ıÓ‰\n" <<
-		"1. œÓÒÏÓÚÂÚ¸ ÚÛ·Û ÔÓ Ì‡Á‚‡ÌË˛\n" <<
-		"2. œÓÒÏÓÚÂÚ¸ ÚÛ·Û ÔÓ ÒÓÒÚÓˇÌË˛\n" <<
-		"3. œÓÒÏÓÚÂÚ¸  — ÔÓ Ì‡Á‚‡ÌË˛\n" <<
-		"4. œÓÒÏÓÚÂÚ¸  — ÔÓ ÍÓÎË˜ÂÒÚ‚Û ˆÂıÓ‚" << endl;
+		"0. –í—ã—Ö–æ–¥\n" <<
+		"1. –ü—Ä–æ—Å–º–æ—Ç—Ä–µ—Ç—å —Ç—Ä—É–±—É –ø–æ –Ω–∞–∑–≤–∞–Ω–∏—é\n" <<
+		"2. –ü—Ä–æ—Å–º–æ—Ç—Ä–µ—Ç—å —Ç—Ä—É–±—É –ø–æ —Å–æ—Å—Ç–æ—è–Ω–∏—é\n" <<
+		"3. –ü—Ä–æ—Å–º–æ—Ç—Ä–µ—Ç—å –ö–° –ø–æ –Ω–∞–∑–≤–∞–Ω–∏—é\n" <<
+		"4. –ü—Ä–æ—Å–º–æ—Ç—Ä–µ—Ç—å –ö–° –ø–æ –∫–æ–ª–∏—á–µ—Å—Ç–≤—É —Ü–µ—Ö–æ–≤" << endl;
 }
 
 void delete_menu() {
 	cout <<
-		"”‰‡ÎËÚ¸:\n" <<
-		"1. “Û·Û\n" <<
-		"2.  —" << endl;
+		"–£–¥–∞–ª–∏—Ç—å:\n" <<
+		"1. –¢—Ä—É–±—É\n" <<
+		"2. –ö–°" << endl;
 }
 
 void action() {
 	cout <<
-		"1. ”‰‡ÎËÚ¸\n" <<
-		"2. –Â‰‡ÍÚËÓ‚‡Ú¸\n";//ÚÛÚ ÔÓ‰ÛÏ‡Ú¸
+		"1. –£–¥–∞–ª–∏—Ç—å\n" <<
+		"2. –†–µ–¥–∞–∫—Ç–∏—Ä–æ–≤–∞—Ç—å\n";//—Ç—É—Ç –ø–æ–¥—É–º–∞—Ç—å
+}
+
+vector<string> get_log_files() {
+    vector<string> log_files;
+
+    WIN32_FIND_DATAA findFileData;
+    HANDLE hFind = FindFirstFileA("log_*", &findFileData);
+
+    if (hFind != INVALID_HANDLE_VALUE) {
+        do {
+            if (!(findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+                string filename = findFileData.cFileName;
+                if (filename.find("log_") == 0 && filename.find(".txt") == string::npos) {
+                    log_files.push_back(filename);
+                }
+            }
+        } while (FindNextFileA(hFind, &findFileData) != 0);
+
+        FindClose(hFind);
+    }
+
+    sort(log_files.rbegin(), log_files.rend());
+
+    return log_files;
 }
 
 void view_logs() {
-    cout << "=== œ–Œ—ÃŒ“– LOG-‘¿…ÀŒ¬ ===" << endl;
-    cout << "¬‚Â‰ËÚÂ ËÏˇ log-Ù‡ÈÎ‡ (Ì‡ÔËÏÂ: log_16_09_2025_14_30_25): ";
+    cout << "=== –ü–†–û–°–ú–û–¢–† LOG-–§–ê–ô–õ–û–í ===" << endl;
 
-    string filename;
-    INPUT_LINE(cin, filename);
+    vector<string> log_files = get_log_files();
 
-    ifstream logfile(filename);
+    if (log_files.empty()) {
+        cout << "Log-—Ñ–∞–π–ª—ã –Ω–µ –Ω–∞–π–¥–µ–Ω—ã!" << endl;
+        return;
+    }
+
+    cout << "–î–æ—Å—Ç—É–ø–Ω—ã–µ log-—Ñ–∞–π–ª—ã:" << endl;
+    for (size_t i = 0; i < log_files.size(); ++i) {
+        cout << i + 1 << ". " << log_files[i] << endl;
+    }
+
+    cout << "–í—ã–±–µ—Ä–∏—Ç–µ —Ñ–∞–π–ª (1-" << log_files.size() << ") –∏–ª–∏ 0 –¥–ª—è –æ—Ç–º–µ–Ω—ã: ";
+    int choice = InputCor(0, static_cast<int>(log_files.size()));
+
+    if (choice == 0) {
+        return;
+    }
+
+    string selected_file = log_files[choice - 1];
+
+    ifstream logfile(selected_file);
     if (logfile.is_open()) {
-        cout << "=== —Œƒ≈–∆»ÃŒ≈ " << filename << " ===" << endl;
+        cout << "=== –°–û–î–ï–†–ñ–ò–ú–û–ï " << selected_file << " ===" << endl;
         string line;
         int line_count = 0;
         while (getline(logfile, line)) {
             cout << line << endl;
             line_count++;
 
-            // œ‡ÛÁ‡ Í‡Ê‰˚Â 20 ÒÚÓÍ
             if (line_count % 20 == 0) {
-                cout << "--- Õ‡ÊÏËÚÂ Enter ‰Îˇ ÔÓ‰ÓÎÊÂÌËˇ ---";
+                cout << "--- –ù–∞–∂–º–∏—Ç–µ Enter –¥–ª—è –ø—Ä–æ–¥–æ–ª–∂–µ–Ω–∏—è ---";
                 cin.ignore();
                 cin.get();
             }
         }
         logfile.close();
-        cout << "===  ŒÕ≈÷ ‘¿…À¿ ===" << endl;
+        cout << "=== –ö–û–ù–ï–¶ –§–ê–ô–õ–ê ===" << endl;
     }
     else {
-        cout << "Œ¯Ë·Í‡ ÓÚÍ˚ÚËˇ Ù‡ÈÎ‡ " << filename << "!" << endl;
-        cout << "”·Â‰ËÚÂÒ¸ ˜ÚÓ Ù‡ÈÎ ÒÛ˘ÂÒÚ‚ÛÂÚ ‚ Ô‡ÔÍÂ Ò ÔÓ„‡ÏÏÓÈ" << endl;
+        cout << "–û—à–∏–±–∫–∞ –æ—Ç–∫—Ä—ã—Ç–∏—è —Ñ–∞–π–ª–∞ " << selected_file << "!" << endl;
     }
+}
+
+// –§—É–Ω–∫—Ü–∏—è –¥–ª—è –ø–∞—Ä—Å–∏–Ω–≥–∞ –¥–∞–Ω–Ω—ã—Ö —Ç—Ä—É–±—ã –∏–∑ —Å—Ç—Ä–æ–∫–∏
+bool parse_pipe_data(const string& line, Pipe& pipe) {
+    // –ò—â–µ–º –ø–∞—Ç—Ç–µ—Ä–Ω—ã –≤ –ª–æ–≥–µ –¥–ª—è –∏–∑–≤–ª–µ—á–µ–Ω–∏—è –¥–∞–Ω–Ω—ã—Ö —Ç—Ä—É–±—ã
+    if (line.find("–ù–∞–∑–≤–∞–Ω–∏–µ: ") != string::npos) {
+        pipe.set_name(line.substr(10)); // –ë–µ—Ä–µ–º –≤—Å–µ –ø–æ—Å–ª–µ "–ù–∞–∑–≤–∞–Ω–∏–µ: "
+        return true;
+    }
+    else if (line.find("–î–ª–∏–Ω–∞ —Ç—Ä—É–±—ã: ") != string::npos) {
+        string length_str = line.substr(13);
+        pipe.set_lenght(stod(length_str));
+        return true;
+    }
+    else if (line.find("–î–∏–∞–º–µ—Ç—Ä —Ç—Ä—É–±—ã: ") != string::npos) {
+        string diameter_str = line.substr(15);
+        pipe.set_diametr(stod(diameter_str));
+        return true;
+    }
+    else if (line.find("–°–æ—Å—Ç–æ—è–Ω–∏–µ —Ç—Ä—É–±—ã") != string::npos) {
+        size_t pos = line.find(":") + 1;
+        string repair_str = line.substr(pos);
+        pipe.set_repair(stoi(repair_str) == 1);
+        return true;
+    }
+    return false;
+}
+
+// –§—É–Ω–∫—Ü–∏—è –¥–ª—è –ø–∞—Ä—Å–∏–Ω–≥–∞ –¥–∞–Ω–Ω—ã—Ö –ö–° –∏–∑ —Å—Ç—Ä–æ–∫–∏
+bool parse_ks_data(const string& line, ks& ks_obj) {
+    if (line.find("–ù–∞–∑–≤–∞–Ω–∏–µ —Å—Ç–∞–Ω—Ü–∏–∏: ") != string::npos) {
+        ks_obj.set_name(line.substr(18));
+        return true;
+    }
+    else if (line.find("–ö–æ–ª–∏—á–µ—Å—Ç–≤–æ —Ü–µ—Ö–æ–≤: ") != string::npos) {
+        string count_str = line.substr(18);
+        ks_obj.set_count_cex(stoi(count_str));
+        return true;
+    }
+    else if (line.find("–ö–æ–ª–∏—á–µ—Å–≤—Ç–æ —Ä–∞–±–æ—Ç–∞—é—â–∏—Ö —Ü–µ—Ö–æ–≤: ") != string::npos) {
+        string count_str = line.substr(29);
+        ks_obj.set_count_cex_work(stoi(count_str));
+        return true;
+    }
+    else if (line.find("–ö–ª–∞—Å—Å –ö–°: ") != string::npos) {
+        string class_str = line.substr(10);
+        ks_obj.set_klass(stoi(class_str));
+        return true;
+    }
+    return false;
+}
+
+// –û—Å–Ω–æ–≤–Ω–∞—è —Ñ—É–Ω–∫—Ü–∏—è –≤–æ—Å—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω–∏—è –¥–∞–Ω–Ω—ã—Ö –∏–∑ log-—Ñ–∞–π–ª–∞
+void restore_from_log(const string& filename, unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css) {
+    cout << "=== –í–û–°–°–¢–ê–ù–û–í–õ–ï–ù–ò–ï –î–ê–ù–ù–´–• –ò–ó LOG-–§–ê–ô–õ–ê ===" << endl;
+
+    ifstream logfile(filename);
+    if (!logfile.is_open()) {
+        cout << "–û—à–∏–±–∫–∞ –æ—Ç–∫—Ä—ã—Ç–∏—è —Ñ–∞–π–ª–∞ " << filename << "!" << endl;
+        return;
+    }
+
+    unordered_map<int, Pipe> restored_pipes;
+    unordered_map<int, ks> restored_css;
+
+    string line;
+    Pipe current_pipe;
+    ks current_ks;
+    bool is_reading_pipe = false;
+    bool is_reading_ks = false;
+    int max_pipe_id = 0;
+    int max_ks_id = 0;
+
+    while (getline(logfile, line)) {
+        if (line.empty()) continue;
+
+        if (line.find("PIPE_NAME:") != string::npos) {
+            current_pipe.set_name(line.substr(10));
+            is_reading_pipe = true;
+            is_reading_ks = false;
+        }
+        else if (line.find("PIPE_LENGTH:") != string::npos) {
+            current_pipe.set_lenght(stod(line.substr(12)));
+        }
+        else if (line.find("PIPE_DIAMETER:") != string::npos) {
+            current_pipe.set_diametr(stod(line.substr(14)));
+        }
+        else if (line.find("PIPE_REPAIR:") != string::npos) {
+            current_pipe.set_repair(stoi(line.substr(12)) == 1);
+        }
+        else if (line.find("PIPE_ID:") != string::npos) {
+            int id = stoi(line.substr(8));
+            current_pipe.set_id(id);
+            restored_pipes[id] = current_pipe;
+            max_pipe_id = max(max_pipe_id, id);
+            current_pipe = Pipe(); // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –¥–ª—è —Å–ª–µ–¥—É—é—â–µ–π —Ç—Ä—É–±—ã
+        }
+        else if (line.find("KS_NAME:") != string::npos) {
+            current_ks.set_name(line.substr(8));
+            is_reading_ks = true;
+            is_reading_pipe = false;
+        }
+        else if (line.find("KS_CEX_COUNT:") != string::npos) {
+            current_ks.set_count_cex(stoi(line.substr(13)));
+        }
+        else if (line.find("KS_CEX_WORKING:") != string::npos) {
+            current_ks.set_count_cex_work(stoi(line.substr(15)));
+        }
+        else if (line.find("KS_CLASS:") != string::npos) {
+            current_ks.set_klass(stoi(line.substr(9)));
+        }
+        else if (line.find("KS_ID:") != string::npos) {
+            int id = stoi(line.substr(6));
+            current_ks.set_id(id);
+            restored_css[id] = current_ks;
+            max_ks_id = max(max_ks_id, id);
+            current_ks = ks(); // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –¥–ª—è —Å–ª–µ–¥—É—é—â–µ–π –ö–°
+        }
+    }
+
+    logfile.close();
+
+    // –ó–∞–º–µ–Ω—è–µ–º —Ç–µ–∫—É—â–∏–µ –¥–∞–Ω–Ω—ã–µ
+    if (!restored_pipes.empty()) {
+        pipe_group = restored_pipes;
+        Pipe::set_MaxID(max_pipe_id + 1);
+        cout << "‚úì –í–æ—Å—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω–æ —Ç—Ä—É–±: " << pipe_group.size() << endl;
+    }
+
+    if (!restored_css.empty()) {
+        css = restored_css;
+        ks::set_MaxID(max_ks_id + 1);
+        cout << "‚úì –í–æ—Å—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω–æ –ö–°: " << css.size() << endl;
+    }
+
+    cout << "=== –í–û–°–°–¢–ê–ù–û–í–õ–ï–ù–ò–ï –ó–ê–í–ï–†–®–ï–ù–û ===" << endl;
 }

@@ -1,7 +1,12 @@
 #pragma once
 #include <iostream>
 #include <unordered_map>
-#include "Pipe.h"
+#include <filesystem>
+#include <algorithm>
+#include <vector>
+
+class Pipe;
+class ks;
 
 using namespace std;
 
@@ -41,6 +46,9 @@ void delete_menu();
 void sort_menu();
 void action();
 void view_logs();
+
+vector <string> get_log_files();
+void restore_from_log(const string& filename, unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css);
 
 template <typename T>
 void ID_ver(unordered_map<int, T>& objects, int todo) {

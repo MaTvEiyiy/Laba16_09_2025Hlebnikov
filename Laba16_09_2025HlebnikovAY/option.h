@@ -20,3 +20,4 @@ void option6(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css);
 void option7(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css);
 void option8(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css);
 void option9(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css,unordered_set<int>&keys);
+void option10(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css);

@@ -19,15 +19,19 @@ void Pipe::getPipe() {
 	cout << "¬ведите название трубы: ";
 	cin.ignore(1000, '\n');
 	getline(cin,namePipe);
-	cerr << namePipe << endl;
+	cerr << "PIPE_NAME:" << namePipe << endl;
 	cout << "¬ведите длину: ";
 	lenght = InputCor(0, 10000);
+	cerr << "PIPE_LENGTH:" << lenght << endl;
 	cout << "¬ведите диаметр: ";
 	diametr = InputCor(0, 1000);
+	cerr << "PIPE_DIAMETER:" << diametr << endl;
 	cout << "“руба в ремонте? (1-да, 0-нет): ";
 	repair = InputCor(0, 1);
+	cerr << "PIPE_REPAIR:" << repair << endl;
 	id = MaxID;
 	MaxID++;
+	cerr << "PIPE_ID:" << id << endl;
 }
 
 void Pipe::edit() {

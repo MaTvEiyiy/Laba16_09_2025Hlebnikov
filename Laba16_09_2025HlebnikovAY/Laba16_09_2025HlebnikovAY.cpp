@@ -36,6 +36,7 @@ int main() {
 	string time(buf);
 	ofstream logfile("log_" + time);
 	if (logfile) cerr_out.redirect(logfile);
+	cerr << "===LOG_START===" << endl;
 
 	while (true) {
 		menu();
@@ -77,7 +78,7 @@ int main() {
 			cout << "До свидания!" << endl;
 			return 0;
 		case 10:
-			view_logs();
+			option10(pipe_group, css);
 			break;
 		}
 		default: {

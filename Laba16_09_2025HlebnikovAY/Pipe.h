@@ -30,4 +30,15 @@ public:
 	void delete_searched(unordered_map<int, Pipe>& pipe_group, const unordered_set<int>& keys);
 	void show_searched(unordered_map<int, Pipe>& pipe_group, const unordered_set<int>& keys);
 	void edit_searched(unordered_map<int, Pipe>& pipe_group, const unordered_set<int>& keys);
+	void set_name(const string& name) { namePipe = name; }
+	void set_lenght(double len) { lenght = len; }
+	void set_diametr(double diam) { diametr = diam; }
+	void set_repair(bool rep) { repair = rep; }
+	void set_id(int new_id) { id = new_id; }
+
+	string get_name() const { return namePipe; }
+	double get_lenght() const { return lenght; }
+	double get_diametr() const { return diametr; }
+	bool get_repair() const { return repair; }
+	static void set_MaxID(int new_max) { MaxID = new_max; }
 };

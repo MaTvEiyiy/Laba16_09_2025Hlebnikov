@@ -18,15 +18,19 @@ void ks::getks() {
 	cin.ignore(1000, '\n');
 	cout << "¬ведите название компрессорной станции: ";
 	getline(cin, ksname);
-	cerr << ksname << endl;
+	cerr << "KS_NAME:" << ksname << endl;
 	cout << "¬ведите количество цехов: ";
 	count_cex= InputCor(0,1000);
+	cerr << "KS_CEX_COUNT:" << count_cex << endl;
 	cout << "¬ведите количество работающих цехов: ";
 	count_cex_work=InputCor(0,count_cex);
+	cerr << "KS_CEX_WORKING:" << count_cex_work << endl;
 	cout << "¬ведите класс станции (от 1 до 5): ";
 	klass = InputCor(1, 5);
+	cerr << "KS_CLASS:" << klass << endl;
 	id = MaxID;
 	MaxID++;
+	cerr << "KS_ID:" << id << endl;
 }
 
 void ks::edit() {

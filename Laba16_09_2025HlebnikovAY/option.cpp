@@ -18,11 +18,26 @@ void option2(unordered_map<int, ks>& css) {
 }
 
 void option3(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css) {
-	Pipe p;
-	ks k;
-	p.show_pipe(pipe_group);
-	k.showks(css);
-	return;
+	if (pipe_group.empty() && css.empty()) {
+		cout << "Нет объектов для отображения!" << endl;
+		return;
+	}
+
+	if (pipe_group.empty()) {
+		cout << "Трубы отсутствуют!" << endl;
+	}
+	else {
+		Pipe p;
+		p.show_pipe(pipe_group);
+	}
+
+	if (css.empty()) {
+		cout << "КС отсутствуют!" << endl;
+	}
+	else {
+		ks k;
+		k.showks(css);
+	}
 }
 void option4(unordered_map<int, Pipe>& pipe_group) {
 	if (!pipe_group.empty())ID_ver(pipe_group, 0);
@@ -234,4 +249,77 @@ void option9(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css, 
 		cout << "Нет выбранных ID для обработки!" << endl;
 	}
 	keys.clear();
+}
+
+void option10(unordered_map<int, Pipe>& pipe_group, unordered_map<int, ks>& css) {
+	cout << "=== РАБОТА С LOG-ФАЙЛАМИ ===" << endl;
+
+	vector<string> log_files = get_log_files();
+
+	if (log_files.empty()) {
+		cout << "Log-файлы не найдены в текущей директории!" << endl;
+		return;
+	}
+
+	cout << "Доступные log-файлы:" << endl;
+	for (size_t i = 0; i < log_files.size(); ++i) {
+		cout << i + 1 << ". " << log_files[i] << endl;
+	}
+
+	cout << "Выберите файл (1-" << log_files.size() << ") или 0 для отмены: ";
+	int choice = InputCor(0, static_cast<int>(log_files.size()));
+
+	if (choice == 0) {
+		return;
+	}
+
+	string selected_file = log_files[choice - 1];
+
+	cout << "\nВыберите действие:" << endl;
+	cout << "1. Просмотреть содержимое" << endl;
+	cout << "2. Восстановить данные" << endl;
+	cout << "0. Отмена" << endl;
+
+	int action_choice = InputCor(0, 2);
+
+	switch (action_choice) {
+	case 1: {
+		ifstream logfile(selected_file);
+		if (logfile.is_open()) {
+			cout << "=== СОДЕРЖИМОЕ " << selected_file << " ===" << endl;
+			string line;
+			int line_count = 0;
+			while (getline(logfile, line)) {
+				cout << line << endl;
+				line_count++;
+
+				if (line_count % 20 == 0) {
+					cout << "--- Нажмите Enter для продолжения ---";
+					cin.ignore();
+					cin.get();
+				}
+			}
+			logfile.close();
+			cout << "=== КОНЕЦ ФАЙЛА ===" << endl;
+		}
+		else {
+			cout << "Ошибка открытия файла!" << endl;
+		}
+		break;
+	}
+	case 2: {
+		cout << "Внимание! Текущие данные будут заменены на данные из log-файла." << endl;
+		cout << "Вы уверены? (1-да, 0-нет): ";
+		if (InputCor(0, 1) == 1) {
+			restore_from_log(selected_file, pipe_group, css);
+			cout << "Данные успешно восстановлены из " << selected_file << endl;
+		}
+		else {
+			cout << "Восстановление отменено." << endl;
+		}
+		break;
+	}
+	case 0:
+		return;
+	}
 }
